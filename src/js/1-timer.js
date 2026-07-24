@@ -41,9 +41,10 @@ const fp = flatpickr(selectDataField, options);
 console.log(fp);
 
 button.addEventListener("click", (event) => {
+    selectDataField.disabled = true;
+    button.disabled = true;
     const timeInterval = setInterval(() => {
-      selectDataField.disabled = true;
-      button.disabled = true;
+      
       let timeLeft = selectedDate - Date.now();
       let ms = convertMs(timeLeft);
       secondsDOM.textContent = addLeadingZero(ms.seconds);
