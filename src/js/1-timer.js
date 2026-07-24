@@ -21,31 +21,7 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    console.log(selectedDates[0])
-  },
-  onChange(selectedDates, dateStr, instance) {
-    checkDate(selectedDates[0]);
-  }
-};
-
-const fp = flatpickr(selectDataField, options);
-console.log(fp);
-
-button.addEventListener("click", (event) => {
-    setInterval(() => {
-      let timeLeft = selectedDate - Date.now();
-      let ms = convertMs(timeLeft);
-      secondsDOM.textContent = addLeadingZero(ms.seconds);
-      minutesDOM.textContent = addLeadingZero(ms.minutes);
-      hoursDOM.textContent = addLeadingZero(ms.hours);
-      daysDOM.textContent = addLeadingZero(ms.days);
-
-      console.log(ms)
-    }, 1000)
-})
-
-function checkDate(selectDates) {
-    if(selectDates.getTime() < Date.now()) {
+     if(selectedDates[0].getTime() <= Date.now()) {
       button.disabled = true;
       iziToast.show({
       backgroundColor: 'red',
@@ -55,10 +31,37 @@ function checkDate(selectDates) {
     });
     return;
   }
-  selectedDate = selectDates.getTime();
+  selectedDate = selectedDates[0].getTime();
   button.disabled = false;
   console.log(selectedDate);
-}
+  }
+};
+
+const fp = flatpickr(selectDataField, options);
+console.log(fp);
+
+button.addEventListener("click", (event) => {
+    const timeInterval = setInterval(() => {
+      selectDataField.disabled = true;
+      button.disabled = true;
+      let timeLeft = selectedDate - Date.now();
+      let ms = convertMs(timeLeft);
+      secondsDOM.textContent = addLeadingZero(ms.seconds);
+      minutesDOM.textContent = addLeadingZero(ms.minutes);
+      hoursDOM.textContent = addLeadingZero(ms.hours);
+      daysDOM.textContent = addLeadingZero(ms.days);
+      if(timeLeft <= 0 ) {
+        secondsDOM.textContent = "00";
+        minutesDOM.textContent = "00";
+        hoursDOM.textContent = "00";
+        daysDOM.textContent = "00";
+        clearInterval(timeInterval);
+        selectDataField.disabled = false;
+        button.disabled = true;
+      }
+      console.log(ms)
+    }, 1000)
+})
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -80,5 +83,5 @@ function convertMs(ms) {
 }
 
 function addLeadingZero(value) {
-  return String(value).length < 2 ? value.padStart(2, "0") : value;
+  return String(value).padStart(2, "0");
 }

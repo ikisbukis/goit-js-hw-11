@@ -12,12 +12,12 @@ function createPromis(e) {
     const state = form.elements.state.value;
     console.log(state);
     console.log(delay.value);
-    const promise = new Promise((resolve, reject) => {
+    new Promise((resolve, reject) => {
         setTimeout(() => {
             if (state === "fulfilled"){
-                resolve(`✅ Fulfilled promise in ${delay.value}ms`);
+                resolve(delay.value);
             } else {
-                reject(`❌ Rejected promise in ${delay.value}ms`);
+                reject(delay.value);
             }
         }, `${delay.value}`)
     })
@@ -26,7 +26,7 @@ function createPromis(e) {
         backgroundColor: 'green',
         messageColor: "white",
         position: "topCenter",
-        message: data
+        message: `✅ Fulfilled promise in ${data}ms`
     });
     })
     .catch(error => {
@@ -34,7 +34,7 @@ function createPromis(e) {
         backgroundColor: 'red',
         messageColor: "white",
         position: "topCenter",
-        message: error
+        message: `❌ Rejected promise in ${error}ms`
     });
     })
 }
