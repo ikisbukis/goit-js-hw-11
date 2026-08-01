@@ -16,7 +16,7 @@ input.addEventListener("input", (e) => {
 form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    if(!searchWord.trim()) return;
+    if(!searchWord || !searchWord.trim()) return;
     clearGallery();
     showLoader();
 
